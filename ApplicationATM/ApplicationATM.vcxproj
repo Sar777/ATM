@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ATM.h" />
+    <ClInclude Include="Bank.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="CreditCard.h" />
     <ClInclude Include="stdafx.h" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="ApplicationATM.cpp" />
     <ClCompile Include="ATM.cpp" />
+    <ClCompile Include="Bank.cpp" />
     <ClCompile Include="CreditCard.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

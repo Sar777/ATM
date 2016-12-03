@@ -1,16 +1,15 @@
 #include "CreditCard.h"
 #include <sstream>
 
-CreditCard::CreditCard(): _pinCode(0)
+CreditCard::CreditCard(): _pinCode(0), _cardState(0)
 {
-	_numberCode = uint32(rand() % 100000000 + 1);
-	_balance = uint32(rand() % 10000 + 1); // TEMP
+	_id = 1;
 }
 
 std::string CreditCard::ToString() const
 {
 	std::ostringstream stream;
-	stream << "NumberCode: " << _numberCode << " Pin: " << _pinCode;
+	stream << "NumberCode: " << _id << " Pin: " << _pinCode;
 	return stream.str();
 }
 

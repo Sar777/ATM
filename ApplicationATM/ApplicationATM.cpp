@@ -46,6 +46,10 @@ int main()
 	auto atm = std::make_shared<ATM>();
 	atm->Initialization();
 
+	std::cout << "ATM Banknotes..." << std::endl;
+	for (auto banknote : atm->GetBanknotes())
+		std::cout << banknote.first << " rub, " << int(banknote.second) << "x" << std::endl;
+
 	while (true)
 	{
 		if (!CardInsertValidate(atm))
@@ -59,7 +63,7 @@ int main()
 			std::cout << "Action: ";
 			std::cin >> action;
 
-			if (!atm->Execute(action))
+			if (!atm->Execute(action, 120))
 				break;
 
 			if (atm->GetState() == ATM_STATE_CARD_INJECTED)

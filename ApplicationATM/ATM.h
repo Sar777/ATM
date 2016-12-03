@@ -2,13 +2,15 @@
 #include "Common.h"
 #include "CreditCard.h"
 #include <memory>
+#include <vector>
 
 #define MAX_PIN_COUNTER 3
 
 enum Actions : uint8
 {
 	ACTION_BALANCE			= 0,
-	ACTION_INJECT_CARD		= 1,
+	ACTION_WITHDRAW_MONEY   = 1,
+	ACTION_INJECT_CARD		= 2,
 	MAX_ACTION
 };
 
@@ -29,7 +31,9 @@ enum ValidateResult
 
 class ATM;
 
-typedef bool(ATM::*pAction)();
+typedef bool(ATM::*pAction)(uint32 data);
+
+typedef std::vector<std::pair<uint32, uint8>> BanknoteVector;
 
 class ATM
 {
@@ -39,15 +43,27 @@ public:
 
 	void Initialization();
 	static void PrintActions();
+
+	BanknoteVector const& GetBanknotes() const { return _banknotes; }
+
 	ValidateResult ValidateCard(uint16 pin);
 	void InsertCard(std::unique_ptr<CreditCard> _card);
-	bool Execute(uint8 action);
-	bool InjectCard();
-	bool Balance();
+	bool Execute(uint8 action, uint32 data);
+
+	// Actions
+	bool InjectCard(uint32 data = 0);
+	bool WithdrawMoney(uint32 money);
+	bool Balance(uint32 data = 0);
+
 	State GetState() const { return _state; }
 	uint8 GetPinFailCounter() const { return _pinFailCounter;  }
 private:
+	std::vector<uint32> GetBanknoteList(uint32 money);
+	void RemoveFromCassettes(std::vector<uint32> const& backnotes);
+
 	std::unique_ptr<CreditCard> _currentCard;
+	BanknoteVector _banknotes;
+
 	State _state;
 	uint8 _pinFailCounter;
 };

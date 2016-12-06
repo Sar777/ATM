@@ -29,7 +29,7 @@ bool CardInsertValidate(std::shared_ptr<ATM> atm)
 			case ATM_CARD_VALIDATE_CARD_BLOCKED:
 			{
 				std::cout << "Fail: Pin put limit. Card Injected" << std::endl;
-				atm->InjectCard();
+				atm->EjectCard();
 				return false;
 			}
 			case ATM_CARD_VALIDATE_SUCCESS:
@@ -63,8 +63,23 @@ int main()
 			std::cout << "Action: ";
 			std::cin >> action;
 
-			if (!atm->Execute(action, 120))
-				break;
+			switch (action)
+			{
+				case ACTION_BALANCE:
+					atm->Balance();
+					break;
+				case ACTION_WITHDRAW_MONEY:
+					int money;
+					std::cout << "Money: ";
+					std::cin >> money;
+					atm->WithdrawMoney(money);
+					break;
+				case ACTION_EJECT_CARD:
+					atm->EjectCard();
+					break;
+				default:
+					break;
+			}
 
 			if (atm->GetState() == ATM_STATE_CARD_INJECTED)
 				break;

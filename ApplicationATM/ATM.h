@@ -10,7 +10,7 @@ enum Actions : uint8
 {
 	ACTION_BALANCE			= 0,
 	ACTION_WITHDRAW_MONEY   = 1,
-	ACTION_INJECT_CARD		= 2,
+	ACTION_EJECT_CARD		= 2,
 	MAX_ACTION
 };
 
@@ -31,8 +31,6 @@ enum ValidateResult
 
 class ATM;
 
-typedef bool(ATM::*pAction)(uint32 data);
-
 typedef std::vector<std::pair<uint32, uint8>> BanknoteVector;
 
 class ATM
@@ -48,12 +46,11 @@ public:
 
 	ValidateResult ValidateCard(uint16 pin);
 	void InsertCard(std::unique_ptr<CreditCard> _card);
-	bool Execute(uint8 action, uint32 data);
 
 	// Actions
-	bool InjectCard(uint32 data = 0);
+	bool EjectCard();
 	bool WithdrawMoney(uint32 money);
-	bool Balance(uint32 data = 0);
+	bool Balance();
 
 	State GetState() const { return _state; }
 	uint8 GetPinFailCounter() const { return _pinFailCounter;  }

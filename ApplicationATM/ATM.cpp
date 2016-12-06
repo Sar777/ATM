@@ -7,13 +7,6 @@
 
 #define MAX_ERROR_CARD 3
 
-pAction Actions[MAX_ACTION] =
-{
-	&ATM::Balance,
-	&ATM::WithdrawMoney,
-	&ATM::InjectCard,
-};
-
 ATM::ATM(): _state(ATM_STATE_NONE), _pinFailCounter(0)
 { }
 
@@ -37,9 +30,9 @@ void ATM::PrintActions()
 				std::cout << ACTION_WITHDRAW_MONEY << ") Withdraw money: " << std::endl;
 				break;
 			}
-			case ACTION_INJECT_CARD:
+			case ACTION_EJECT_CARD:
 			{
-				std::cout << ACTION_INJECT_CARD << ") InjectCard: " << std::endl;
+				std::cout << ACTION_EJECT_CARD << ") InjectCard: " << std::endl;
 				break;
 			}
 			default:
@@ -84,16 +77,8 @@ void ATM::InsertCard(std::unique_ptr<CreditCard> _card)
 	std::cout << "You card info: " << _currentCard->ToString() << std::endl;
 }
 
-bool ATM::Execute(uint8 action, uint32 data)
-{
-	if (action >= MAX_ACTION)
-		throw std::exception("ATM: Fail execute operation. Action not found");
-
-	return (this->*Actions[action])(data);
-}
-
 // Actions
-bool ATM::Balance(uint32 data /*= 0*/)
+bool ATM::Balance()
 {
 	if (!_currentCard)
 		throw std::exception("ATM: Not found card");
@@ -134,7 +119,7 @@ bool ATM::WithdrawMoney(uint32 money)
 	return true;
 }
 
-bool ATM::InjectCard(uint32 data /*= 0*/)
+bool ATM::EjectCard()
 {
 	if (!_currentCard)
 		throw std::exception("ATM: Fail card inject(Not card)");
